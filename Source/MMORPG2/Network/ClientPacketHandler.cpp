@@ -14,6 +14,8 @@
 #include "Components/TextBlock.h"
 #include "Components/EditableText.h"
 #include "Components/Button.h"
+#include "Managers/UIManager.h"
+#include "Widget/GameTitleWidget.h"
 
 void ClientPacketHandler::OnRecvPacket(ServerSessionRef session, BYTE* buffer, int32 len)
 {
@@ -49,14 +51,15 @@ void ClientPacketHandler::HandlePacket(PacketMessage packet)
 		case Protocol::S_SUCCESSLOGIN:
 			Handle_S_SuccessLogin(packet);
 			break;
-		case Protocol::S_CREATEACCOUNT:
-			Handle_S_CreateAccount(packet);
-			break;
 		case Protocol::S_FAILEDLOGIN:
 			Handle_S_FailedLogin(packet);
 			break;
 		case Protocol::S_CHAT:
 			Handle_S_Chat(packet);
+			break;
+		case Protocol::S_ENTER_FIELD:
+			Handle_S_EnterField(packet);
+			break;
 	default:
 		break;
 	}
@@ -83,8 +86,8 @@ void ClientPacketHandler::Handle_S_Disconnect(PacketMessage packet)
 	Protocol::S_Disconnect pkt;
 	PacketHeader* header = (PacketHeader*)packet.pkt.GetData();
 	pkt.ParseFromArray(&header[1], header->size - sizeof(PacketHeader));
-	FString text = FString::Printf(TEXT("ID[% d], Name[% s]의 연결이 끊어졌습니다.\n"), pkt.info().id(), pkt.info().name().c_str());
-	Utils::DebugLog(text);
+	//FString text = FString::Printf(TEXT("ID[% d], Name[% s]의 연결이 끊어졌습니다.\n"), pkt.info().id(), pkt.info().name().c_str());
+	//Utils::DebugLog(text);
 
 
 }
@@ -120,6 +123,16 @@ void ClientPacketHandler::Handle_S_Chat(PacketMessage packet)
 
 }
 
+void ClientPacketHandler::Handle_S_EnterField(PacketMessage packet)
+{
+	Protocol::S_EnterField pkt;
+	PacketHeader* header = (PacketHeader*)packet.pkt.GetData();
+	pkt.ParseFromArray(&header[1], header->size - sizeof(PacketHeader));
+
+	Utils::DebugLog(TEXT("Handle S EnterField"));
+
+}
+
 void ClientPacketHandler::Handle_S_Connect(PacketMessage packet)
 {
 	Protocol::S_Connect pkt;
@@ -128,100 +141,39 @@ void ClientPacketHandler::Handle_S_Connect(PacketMessage packet)
 
 	//서버에서 보내준 String  파싱
 	//FString text = FString::Printf(TEXT("%s"), pkt.info().c_str());
-	FString text = UTF8_TO_TCHAR(pkt.info().c_str());
-	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, *text);
+	FString connectText = UTF8_TO_TCHAR(pkt.info().c_str());
 
-	//연결이 되었다. 이 시점에서 현재 사용자의 위치는 Title 화면.
-	//Title 화면에 어떻게 정보를 전달해야할까?
-	//일단 BP_Title을 가져와야 한다.
-	//UWorld* world = GameInstance->GetWorld();
-	//AMMORPG2GameModeBase* mode = Cast<AMMORPG2GameModeBase>(UGameplayStatics::GetGameMode(world));
-	//if (IsValid(mode) == false)
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("Handle_S_Connect ERROR! Don't find mode!"));
-	//	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("Handle_S_Connect ERROR! Don't find mode!"));
-	//	return;
-	//}
+	/*
+		플레이어의 스테이지 위치가 Title인지 나중에 확인하는 절차 넣기.
+		Title UI를 가져와야 하는데 어떻게 가져올까?
+	*/
 
-	//UTitleWidget* title = Cast<UTitleWidget>(mode->Main_UI);
-	//if (IsValid(title) == false)
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("Handle_S_Connect ERROR! Don't find Title Widget"));
-	//	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("Handle_S_Connect ERROR! Don't find Title Widget"));
-	//	return;
-	//}
+	UGameTitleWidget* gameTitleUI = Cast<UGameTitleWidget>(GameInstance->GetUIManager()->Main_UI);
+	if (IsValid(gameTitleUI) == false)
+	{
+		Utils::DebugLog(TEXT("Error Handle_S_Connect"));
+		return;
+	}
 
-	//FText serverText = FText::FromString(text);
-	//title->Information_Text->SetText(serverText);
-	//title->CurrentState = TitleState::Login;
-	//title->IP_EditableText->SetVisibility(ESlateVisibility::Hidden);
-	//title->ID_EditableText->SetVisibility(ESlateVisibility::Visible);
-	//title->Password_EditableText->SetVisibility(ESlateVisibility::Visible);
-	//title->CreateAccount_Button->SetVisibility(ESlateVisibility::Visible);
-	//타이틀 화면에 서버 연결이 되었다는 정보를 전달한 후, 
+	gameTitleUI->CurrentState = TitleState::Login;
+	gameTitleUI->OnSuccessConnect(connectText);
 
-	//로그인 절차에 들어간다.
+	
 
-	//이후 로그인 절차가 끝나면 레벨 이동 후 캐릭터 생성
 }
 
 void ClientPacketHandler::Handle_S_SuccessLogin(PacketMessage packet)
 {
-	//Protocol::S_SuccessLogin pkt;
-	//PacketHeader* header = (PacketHeader*)packet.pkt.GetData();
-	//pkt.ParseFromArray(&header[1], header->size - sizeof(PacketHeader));
+	Protocol::S_SuccessLogin pkt;
+	PacketHeader* header = (PacketHeader*)packet.pkt.GetData();
+	pkt.ParseFromArray(&header[1], header->size - sizeof(PacketHeader));
 
 
 	////서버에서 날아온 string 변환
-	//FString text = UTF8_TO_TCHAR(pkt.info().c_str());
-
-	////현재 화면의 UI 가져오기
-	//UWorld* world = GameInstance->GetWorld();
-	//AMMORPG2GameModeBase* mode = Cast<AMMORPG2GameModeBase>(UGameplayStatics::GetGameMode(world));
-	//if (IsValid(mode) == false)
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("Handle_S_Connect ERROR! Don't find mode!"));
-	//	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("Handle_S_Connect ERROR! Don't find mode!"));
-	//	return;
-	//}
-
-	//UTitleWidget* title = Cast<UTitleWidget>(mode->Main_UI);
-	//if (IsValid(title) == false)
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("Handle_S_Connect ERROR! Don't find Title Widget"));
-	//	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("Handle_S_Connect ERROR! Don't find Title Widget"));
-	//	return;
-	//}
-
-	//FText serverText = FText::FromString(text);
-	//title->Information_Text->SetText(serverText);
-
-	////이 단계에 들어갔다는 건 서버에서 아이디와 비밀번호를 받고, 로그인에 성공했다는 것.
-	////Title 상태를 바꿔서, Login 확인 패킷을 여러번 보낼 수 없게 만들어준다.
-	//title->CurrentState = TitleState::LoginSuccess;
-
-	////TODO
-	////나중에 Load 화면을 넣어주자. 
-	//GameInstance->LoadGameLevel(FString(TEXT("Game")));
-
-	//FTimerHandle WaitHandle;
-	//float WaitTime = 1.0f; //시간을 설정하고
-	//GameInstance->GetWorld()->GetTimerManager().SetTimer(WaitHandle, FTimerDelegate::CreateLambda([&]()
-	//	{
-
-
-	//		//화면 이동이 끝났으면, 서버에 캐릭터 생성 요청을 날린다.
-	//		Make_C_EnterRoom();
-
-	//	}), WaitTime, false); 
-		
-}
-
-void ClientPacketHandler::Handle_S_CreateAccount(PacketMessage packet)
-{
-	Protocol::S_CreateAccount pkt;
-	PacketHeader* header = (PacketHeader*)packet.pkt.GetData();
-	pkt.ParseFromArray(&header[1], header->size - sizeof(PacketHeader));
+	FString text = UTF8_TO_TCHAR(pkt.info().c_str());
+	UGameTitleWidget* gameTitleUI = Cast<UGameTitleWidget>(GameInstance->GetUIManager()->Main_UI);
+	gameTitleUI->CurrentState = TitleState::LoginSuccess;
+	gameTitleUI->OnSuccessLogin(text);
 }
 
 void ClientPacketHandler::Handle_S_FailedLogin(PacketMessage packet)
@@ -262,21 +214,19 @@ void ClientPacketHandler::Make_C_TryLogin(FString id, FString password)
 	GameInstance->GetNetworkManager()->SendPacket(sendBuffer);
 }
 
-void ClientPacketHandler::Make_C_EnterRoom(int32 characterId)
+void ClientPacketHandler::Make_C_EnterField(int32 characterId)
 {
-	Protocol::C_EnterRoom pkt;
+	Protocol::C_EnterField pkt;
 	pkt.set_characterid(characterId);
-	SendBufferRef sendbuffer = MakeSendBuffer(pkt, Protocol::C_ENTER_ROOM);
+	SendBufferRef sendbuffer = MakeSendBuffer(pkt, Protocol::C_ENTER_FIELD);
 
 	GameInstance->GetNetworkManager()->SendPacket(sendbuffer);
-
 }
 
-void ClientPacketHandler::Make_C_CreateAccount(FString id, FString password)
+void ClientPacketHandler::Make_C_DisConnect(FString reason)
 {
-	Protocol::C_CreateAccount pkt;
-	pkt.set_id(TCHAR_TO_UTF8(*id));
-	pkt.set_password(TCHAR_TO_UTF8(*password));
-	SendBufferRef sendBuffer = MakeSendBuffer(pkt, Protocol::C_CREATEACCOUNT);
+	Protocol::C_Disconnect pkt;
+	SendBufferRef sendBuffer = MakeSendBuffer(pkt, Protocol::C_DISCONNECT);
 	GameInstance->GetNetworkManager()->SendPacket(sendBuffer);
+
 }

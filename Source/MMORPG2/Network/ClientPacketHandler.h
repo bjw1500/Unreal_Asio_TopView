@@ -21,11 +21,12 @@ public:
 	void Handle_S_TEST(PacketMessage packet);
 	void Handle_S_Disconnect(PacketMessage packet);
 	void Handle_S_Chat(PacketMessage packet);
+	void Handle_S_EnterField(PacketMessage packet);
 
 	//Pre - Game
 	void Handle_S_Connect(PacketMessage packet);
 	void Handle_S_SuccessLogin(PacketMessage packet);
-	void Handle_S_CreateAccount(PacketMessage packet);
+	//void Handle_S_CreateAccount(PacketMessage packet);
 	void Handle_S_FailedLogin(PacketMessage packet);
 	
 
@@ -34,8 +35,8 @@ public:
 	
 	//Pre - Game
 	void Make_C_TryLogin(FString id, FString password);
-	void Make_C_EnterRoom(int32 characterId = 0);
-	void Make_C_CreateAccount(FString id, FString password);
+	void Make_C_EnterField(int32 characterId = 0);
+	void Make_C_DisConnect(FString reason);
 
 	template<typename T>
 	static SendBufferRef MakeSendBuffer(T& pkt, uint16 pktId)
@@ -53,3 +54,4 @@ public:
 		return sendBuffer;
 	}
 };
+

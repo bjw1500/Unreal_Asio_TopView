@@ -2,3 +2,4 @@
 
 
 DBConnectionPool* GDBConnectionPool = nullptr;
+FieldManager*			 GFieldManager = nullptr;

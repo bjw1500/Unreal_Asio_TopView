@@ -10,10 +10,18 @@ using GameObjectRef = std::shared_ptr<class GameObject>;
 using PlayerRef = std::shared_ptr<class Player>;
 using MonsterRef = std::shared_ptr<class Monster>;
 using CreatureRef = std::shared_ptr<class Creature>;
+using AccountRef = std::shared_ptr<class Account>;
+using FieldRef = shared_ptr<class Field>;
+using FieldSectorRef = shared_ptr<class FieldSector>;
+using ObjectInfoRef = shared_ptr<Protocol::ObjectInfo>;
+
+using CharacterKey = int32;
+using ObectID= int32;
 
 using namespace Protocol;
 
 extern class DBConnectionPool* GDBConnectionPool;
+extern class FieldManager*			  GFieldManager;
 
 #pragma comment(lib, "Protobuf\\Debug\\libprotobufd.lib")
 
@@ -26,3 +34,8 @@ extern class DBConnectionPool* GDBConnectionPool;
 #endif
 
 #include "ServerPacketHandler.h"
+
+enum Define
+{
+	DefaultKey = 0,
+};

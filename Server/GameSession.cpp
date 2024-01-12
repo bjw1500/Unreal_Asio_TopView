@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Player.h"
 #include "GameSession.h"
 #include "GameRoom.h"
 #include "GameSessionManager.h"
@@ -20,7 +19,7 @@ void GameSession::OnConnected()
 void GameSession::OnDisconnected()
 {
 
-
+	cout << "플레이어 연결 끊김" << endl;
 	GSessionManager.Remove(static_pointer_cast<GameSession>(shared_from_this()));
 	
 }

@@ -5,6 +5,7 @@
 #include "../Network/NetworkSession.h"
 #include "Kismet/GameplayStatics.h"
 #include "../Network/Service.h"
+#include "Network/ClientPacketHandler.h"
 #include "../Network/SocketUtils.h"
 #include "../Network/FWorker.h"
 
@@ -16,6 +17,7 @@ NetworkManager::NetworkManager()
 
 NetworkManager::~NetworkManager()
 {
+	Disconnect();
 }
 
 bool NetworkManager::Init(wstring ip)
@@ -58,7 +60,6 @@ ServerSessionRef NetworkManager::CreateSession()
 {
 	_session = MakeShared<ServerSession>();
 
-
 	return _session;
 }
 
@@ -71,9 +72,7 @@ void NetworkManager::Disconnect()
 {
 	if(_service != nullptr)
 		_service->CloseService();
-
-	//쓰레드부터 죽이자.
-
+	GameInstance->GetPacketHandler()->Make_C_DisConnect(TEXT("End Game"));
 }
 
 /********************

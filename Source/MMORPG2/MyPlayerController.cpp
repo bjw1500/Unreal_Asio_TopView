@@ -21,9 +21,6 @@ AMyPlayerController::AMyPlayerController()
 void AMyPlayerController::BeginPlay()
 {
 	//GameInstance->GetNetworkManager()->Init();
-	FString serverIP = FString(TEXT("127.0.0.1"));
-	wstring ip = TCHAR_TO_WCHAR(*serverIP);
-	bool connect = GameInstance->GetNetworkManager()->Init(ip);
 }
 
 void AMyPlayerController::Tick(float DeltaSeconds)
@@ -45,7 +42,8 @@ void AMyPlayerController::Tick(float DeltaSeconds)
 
 void AMyPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	GameInstance->GetNetworkManager()->Disconnect();
+	//GameInstance->GetNetworkManager()->Disconnect();
+	//GameInstance->GetPacketHandler()->Make_C_DisConnect(TEXT("Game End"));
 
 }
 

@@ -11,6 +11,7 @@
 class NetworkManager;
 class ClientPacketHandler;
 class PacketQueue;
+class UUIManager;
 
 UCLASS()
 class MMORPG2_API UGameManager : public UGameInstance
@@ -21,23 +22,34 @@ public:
 	~UGameManager();
 
 	virtual void Init() override;
+
+	UFUNCTION(BlueprintCallable, Category = "Server")
 	void LoadGameLevel(FString name);
 
 
 
 public:
-	NetworkManager* GetNetworkManager();
-	ClientPacketHandler* GetPacketHandler();
-	PacketQueue* GetPacketQueue();
-	AMyPlayerController* GetPlayerController() {
+	NetworkManager*								GetNetworkManager();
+
+	UFUNCTION(BlueprintCallable, Category = "Manager")
+	UUIManager*											GetUIManager();
+
+	ClientPacketHandler*							GetPacketHandler();
+	PacketQueue*										GetPacketQueue();
+	AMyPlayerController*							GetPlayerController() 
+	{
 		return Cast<AMyPlayerController>(GetFirstLocalPlayerController());
 	}
 
 private:
-	TSharedPtr<NetworkManager> _netWorkManager;
-	TSharedPtr<ClientPacketHandler> _packetHandler;
-	TSharedPtr<PacketQueue> _packetQueue;
+	TSharedPtr<NetworkManager>					_netWorkManager;
+	TSharedPtr<PacketQueue>							_packetQueue;
+	TSharedPtr<ClientPacketHandler>			_packetHandler;
 
+	UPROPERTY()
+	TObjectPtr<UUIManager>								UIManager;
+
+	UPROPERTY()
 	AMyPlayerController* MyPlayerController = nullptr;
 
 private:

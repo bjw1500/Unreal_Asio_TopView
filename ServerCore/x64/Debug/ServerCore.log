@@ -16,4 +16,4 @@
   SocketUtils.cpp
   ThreadManager.cpp
   코드를 생성하고 있습니다...
-  ServerCore.vcxproj -> D:\unreal\Server_Unreal\MMORPG2\Server\Libraries\ServerCore\Debug\ServerCore.lib
+  ServerCore.vcxproj -> D:\unreal\Unreal_IOCP_TopView\AsioServer\Libraries\ServerCore\Debug\ServerCore.lib

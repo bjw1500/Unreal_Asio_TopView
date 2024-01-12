@@ -1,0 +1,22 @@
+﻿  pch.cpp
+D:\unreal\Unreal_IOCP_TopView\AsioServer\boost_1_84_0\boost\bind.hpp(41): message : The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.
+  Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
+  - add -D_WIN32_WINNT=0x0601 to the compiler command line; or
+  - add _WIN32_WINNT=0x0601 to your project's Preprocessor Definitions.
+  Assuming _WIN32_WINNT=0x0601 (i.e. Windows 7 target).
+  AsioServer.cpp
+D:\unreal\Unreal_IOCP_TopView\AsioServer\AsioServer\AsioServer.h(17,59): warning C4267: 'return': 'size_t'에서 'int32'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  GameSessionManager.cpp
+  main.cpp
+D:\unreal\Unreal_IOCP_TopView\AsioServer\AsioServer\AsioServer.h(17,59): warning C4267: 'return': 'size_t'에서 'int32'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  RecvBuffer.cpp
+  SendBuffer.cpp
+  ServerPacketHandler.cpp
+D:\unreal\Unreal_IOCP_TopView\AsioServer\AsioServer\AsioServer.h(17,59): warning C4267: 'return': 'size_t'에서 'int32'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Session.cpp
+  ThreadManager.cpp
+ServerPacketHandler.obj : error LNK2001: 확인할 수 없는 외부 기호 "const Protocol::S_Connect::`vftable'" (??_7S_Connect@Protocol@@6B@)
+ServerPacketHandler.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: virtual __cdecl Protocol::S_Connect::~S_Connect(void)" (??1S_Connect@Protocol@@UEAA@XZ)
+ServerPacketHandler.obj : error LNK2001: 확인할 수 없는 외부 기호 "protected: __cdecl Protocol::S_Connect::S_Connect(class google::protobuf::Arena *,bool)" (??0S_Connect@Protocol@@IEAA@PEAVArena@protobuf@google@@_N@Z)
+ServerPacketHandler.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: virtual unsigned __int64 __cdecl Protocol::S_Connect::ByteSizeLong(void)const " (?ByteSizeLong@S_Connect@Protocol@@UEBA_KXZ)
+D:\unreal\Unreal_IOCP_TopView\AsioServer\x64\Release\AsioServer.exe : fatal error LNK1120: 4개의 확인할 수 없는 외부 참조입니다.

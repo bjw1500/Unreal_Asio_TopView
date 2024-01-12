@@ -8,6 +8,12 @@ class ServerPacketHandler
 public:
 	static void HandlePacket(GameSessionRef session, BYTE* buffer, int32 len);
 
+	static void Handle_C_Disconnect(GameSessionRef session, BYTE* buffer, int32 len);
+
+	//pre - game
+	static void Handle_C_TryLogin(GameSessionRef session, BYTE* buffer, int32 len);
+	static void Handle_C_EnterField(GameSessionRef session, BYTE* buffer, int32 len);
+
 	// ������
 	static SendBufferRef Make_S_TEST(uint64 id, uint32 hp, uint16 attack);
 	

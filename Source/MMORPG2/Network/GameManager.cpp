@@ -10,6 +10,7 @@
 #include "Protocol.pb.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
+#include "Managers/UIManager.h"
 
 UGameManager* GameInstance = nullptr;
 
@@ -18,11 +19,6 @@ UGameManager::~UGameManager()
 	Utils::DebugLog(TEXT("~UGameManager"));
 	ThreadManager::GetInstance()->Join();
 	GetPacketQueue()->PopAll();
-
-	//연결된 네트워크 끊어주기;
-	//GetNetworkManager()->Disconnect();
-
-
 }
 
 void UGameManager::Init()
@@ -35,8 +31,6 @@ void UGameManager::Init()
 
 void UGameManager::LoadGameLevel(FString name)
 {
-	
-
 	Utils::DebugLog(name);
 	UWidgetLayoutLibrary::RemoveAllWidgets(GetWorld());
 	UGameplayStatics::OpenLevel(GetWorld(), *name, true);
@@ -53,6 +47,16 @@ NetworkManager* UGameManager::GetNetworkManager()
 
 
 	return _netWorkManager.Get();
+}
+
+UUIManager* UGameManager::GetUIManager()
+{
+	if (IsValid(UIManager)== false)
+	{
+		UIManager = NewObject<UUIManager>();
+	}
+
+	return UIManager;
 }
 
 ClientPacketHandler* UGameManager::GetPacketHandler()

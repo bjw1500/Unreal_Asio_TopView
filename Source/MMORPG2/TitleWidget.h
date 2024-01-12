@@ -10,18 +10,15 @@
 /**
  * 
  */
-
-
-//타이틀에서는 서버 접속에 필요한 IP 주소와 플레이어 아이디를 받아줄 것이다.
-UENUM(BlueprintType)
-enum class TitleState : uint8
-{
-	Connect,
-	Login,
-	CreateAccount,
-	LoginSuccess
-};
-
+//
+// UENUM(BlueprintType)
+//enum class TitleState : uint8
+//{
+//	Connect,
+//	Login,
+//	CreateAccount,
+//	LoginSuccess
+//};
 
 UCLASS()
 class MMORPG2_API UTitleWidget : public UUserWidget
@@ -30,14 +27,14 @@ class MMORPG2_API UTitleWidget : public UUserWidget
 	
 
 public:
-	UFUNCTION(BlueprintCallable, Category = "Server")
-		bool TryConnectToServer(UPARAM(ref) FString& ServerAddress);
+	//UFUNCTION(BlueprintCallable, Category = "Server")
+	//	bool TryConnectToServer(UPARAM(ref) FString& ServerAddress);
 
-	UFUNCTION(BlueprintCallable, Category = "Server")
-		bool TryConnectToLogin(UPARAM(ref) FString& ID, UPARAM(ref) FString& Password);
+	//UFUNCTION(BlueprintCallable, Category = "Server")
+	//	bool TryConnectToLogin(UPARAM(ref) FString& ID, UPARAM(ref) FString& Password);
 
-	UFUNCTION(BlueprintCallable, Category = "Server")
-		bool TryCreateAccount(UPARAM(ref) FString& ID, UPARAM(ref) FString& Password);
+	//UFUNCTION(BlueprintCallable, Category = "Server")
+	//	bool TryCreateAccount(UPARAM(ref) FString& ID, UPARAM(ref) FString& Password);
 
 
 
@@ -73,6 +70,6 @@ public:
 	//UPROPERTY()
 	//	FString UserPassword;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TitleState CurrentState = TitleState::Connect;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//	TitleState CurrentState = TitleState::Connect;
 };
