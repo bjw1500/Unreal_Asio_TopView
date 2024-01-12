@@ -2,9 +2,14 @@
 #include "AsioServer.h"
 #include "Session.h"
 #include "ThreadManager.h"
+#include "FieldManager.h"
+#include "DBConnection.h"
+#include "DBConnectionPool.h"
 #include "ServerPacketHandler.h"
 
-unique_ptr<ThreadManager> GThreadManager = nullptr;
+unique_ptr<ThreadManager>			GThreadManager = nullptr;
+unique_ptr<DBConnectionPool>	GDBConnectionPool = nullptr;
+unique_ptr<FieldManager>				GFieldManager = nullptr;
 
 ServerService::ServerService(boost::asio::io_context& context, string host, string port)
 		: _context(context),
@@ -29,6 +34,11 @@ bool ServerService::Start()
 	//서버가 시작하였으면 클라이언트를 받을 준비를 해준다.
 	ServerPacketHandler::Init();
 	GThreadManager = make_unique<ThreadManager>();
+	GDBConnectionPool = make_unique<DBConnectionPool>();
+	ASSERT_CRASH(GDBConnectionPool->Connect(1, L"Driver={SQL Server Native Client 11.0};Server=(localdb)\\MSSQLLocalDB;Database=Unreal_TopView;Trusted_Connection=Yes;"));
+	GFieldManager = make_unique<FieldManager>();
+	GFieldManager->AddField(0);
+
 	for (int32 i = 0; i < 5; i++)
 	{
 		GThreadManager->Launch([=]()
@@ -43,14 +53,14 @@ bool ServerService::Start()
 
 void ServerService::StartAccept()
 {
-		SessionRef newSession = CreateSession();
+		ClientSessionRef newSession = CreateSession();
 		_acceptor.async_accept(newSession->GetSocket(),
 			boost::bind(&ServerService::ProcessAccept, this, newSession,
 				boost::asio::placeholders::error));
 }
 
 
-void ServerService::ProcessAccept(SessionRef newSession, const boost::system::error_code& error)
+void ServerService::ProcessAccept(ClientSessionRef newSession, const boost::system::error_code& error)
 {
 		if (!error)
 		{
@@ -77,9 +87,9 @@ void ServerService::BroadCast()
 	
 }
 
-SessionRef ServerService::CreateSession()
+ClientSessionRef ServerService::CreateSession()
 {
-	SessionRef session = make_shared<ClientSession>(_context, _host, _port);
+	ClientSessionRef session = make_shared<ClientSession>(_context, _host, _port);
 	session->SetService(shared_from_this());
 	return session;
 }

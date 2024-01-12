@@ -1,31 +1,7 @@
-﻿  pch.cpp
-D:\unreal\Unreal_IOCP_TopView\AsioServer\boost_1_84_0\boost\bind.hpp(41): message : The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.
-  Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
-  - add -D_WIN32_WINNT=0x0601 to the compiler command line; or
-  - add _WIN32_WINNT=0x0601 to your project's Preprocessor Definitions.
-  Assuming _WIN32_WINNT=0x0601 (i.e. Windows 7 target).
-  Account.cpp
-  AsioServer.cpp
-D:\unreal\Unreal_IOCP_TopView\AsioServer\AsioServer\AsioServer.h(18,59): warning C4267: 'return': 'size_t'에서 'int32'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Creature.cpp
-  DBConnection.cpp
-  DBConnectionPool.cpp
-  Field.cpp
-  FieldManager.cpp
-  FieldSector.cpp
-  GameObject.cpp
-  GameSessionManager.cpp
-  main.cpp
-D:\unreal\Unreal_IOCP_TopView\AsioServer\AsioServer\AsioServer.h(18,59): warning C4267: 'return': 'size_t'에서 'int32'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Player.cpp
-  RecvBuffer.cpp
-  SendBuffer.cpp
-  ServerPacketHandler.cpp
+﻿  ServerPacketHandler.cpp
 D:\unreal\Unreal_IOCP_TopView\AsioServer\AsioServer\AsioServer.h(18,59): warning C4267: 'return': 'size_t'에서 'int32'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   Session.cpp
 D:\unreal\Unreal_IOCP_TopView\AsioServer\AsioServer\AsioServer.h(18,59): warning C4267: 'return': 'size_t'에서 'int32'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\unreal\Unreal_IOCP_TopView\AsioServer\AsioServer\Session.cpp(219,9): warning C4267: '인수': 'size_t'에서 'int32'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  ThreadManager.cpp
+D:\unreal\Unreal_IOCP_TopView\AsioServer\AsioServer\Session.cpp(220,9): warning C4267: '인수': 'size_t'에서 'int32'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   코드를 생성하고 있습니다...
-  Protocol.pb.cc
   AsioServer.vcxproj -> D:\unreal\Unreal_IOCP_TopView\AsioServer\x64\Debug\AsioServer.exe

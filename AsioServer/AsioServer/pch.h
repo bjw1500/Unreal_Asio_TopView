@@ -28,7 +28,6 @@
 #pragma comment(lib, "Protobuf\\Release\\libprotobuf.lib")
 #endif
 
-extern std::unique_ptr<class ThreadManager> GThreadManager;
 
 using SessionRef = std::shared_ptr<class Session>;
 using ServiceRef = std::shared_ptr<class ServerService>;
@@ -54,8 +53,9 @@ using ObjectInfoRef = shared_ptr<Protocol::ObjectInfo>;
 
 using namespace Protocol;
 
-extern class DBConnectionPool* GDBConnectionPool;
-extern class FieldManager* GFieldManager;
+extern std::unique_ptr <class DBConnectionPool>	 GDBConnectionPool;
+extern std::unique_ptr<class FieldManager>			GFieldManager;
+extern std::unique_ptr<class ThreadManager>		GThreadManager;
 
 /////////////#Define
 using int8 = __int8;

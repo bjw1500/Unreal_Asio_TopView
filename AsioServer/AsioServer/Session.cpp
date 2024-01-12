@@ -129,7 +129,7 @@ void  Session::RegisterSend()
 		{
 			SendBufferRef sendBuffer = _sendQueue.front();
 			writeSize += sendBuffer->WriteSize();
-			boost::asio::async_write(_socket, boost::asio::buffer(sendBuffer->Buffer(), sendBuffer->WriteSize()),
+			_socket.async_write_some(boost::asio::buffer(sendBuffer->Buffer(), sendBuffer->WriteSize()),
 				boost::bind(&Session::ProcessSend, this,
 					boost::asio::placeholders::error,
 					boost::asio::placeholders::bytes_transferred));
@@ -209,10 +209,11 @@ void Session::ProcessRecv(const boost::system::error_code& error, size_t bytes_t
 void Session::ProcessSend(const boost::system::error_code& error, std::size_t bytes_transferred)
 {
 	if (!error) {
-		std::cout << "Message sent successfully. bytes [" << bytes_transferred << std::endl;
+		//std::cout << "Message sent successfully. bytes [" << bytes_transferred << std::endl;
 	}
 	else {
 		std::cerr << "Write error: " << error.message() << std::endl;
+		return;
 	}
 
 	_sendList.clear();
@@ -282,14 +283,14 @@ void ClientSession::OnDisconnected()
 	//	_myPlayer->Disconnect();
 	//}
 
+	cout << "플레이어 연결 끊김" << endl;
 	GSessionManager.Remove(static_pointer_cast<ClientSession>(shared_from_this()));
 
 }
 
 void ClientSession::OnRecvPacket(BYTE* buffer, int32 len)
 {
-	SessionRef session = GetSessionRef();
-	PacketHeader header = *((PacketHeader*)buffer);
+	ClientSessionRef session = GetSessionRef();
 	ServerPacketHandler::HandlePacket(session, buffer, len);
 }
 

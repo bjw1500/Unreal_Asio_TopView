@@ -7,7 +7,7 @@
 
 DBConnectionPool::DBConnectionPool()
 {
-
+	InitializeCriticalSection(&_lock);
 }
 
 DBConnectionPool::~DBConnectionPool()

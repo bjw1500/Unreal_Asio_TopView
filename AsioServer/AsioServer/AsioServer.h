@@ -8,11 +8,11 @@ public:
 
 	virtual bool Start();
 	void				StartAccept();
-	void				ProcessAccept(SessionRef newSession, const boost::system::error_code& error);
+	void				ProcessAccept(ClientSessionRef newSession, const boost::system::error_code& error);
 	void				BroadCast();
 
 
-	SessionRef	CreateSession();
+	ClientSessionRef	CreateSession();
 	void				AddSession(SessionRef session);
 	void				RemoveSession(SessionRef session);
 	int32				GetCurrentSessionCount() { return _sessions.size(); }

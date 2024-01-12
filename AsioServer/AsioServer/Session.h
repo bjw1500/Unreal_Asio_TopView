@@ -79,4 +79,9 @@ public:
 	virtual void				OnSend(int32 len);
 	virtual void				OnDisconnected();
 
+	void							SetAccount(AccountRef account) { _account = account; }
+	AccountRef				GetAccountRef() { return _account; }
+
+private:
+	AccountRef _account;
 };

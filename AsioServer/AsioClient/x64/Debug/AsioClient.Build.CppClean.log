@@ -1,7 +1,5 @@
-d:\unreal\unreal_iocp_topview\asioserver\asioclient\x64\debug\asioclient.pch
 d:\unreal\unreal_iocp_topview\asioserver\asioclient\x64\debug\vc143.pdb
 d:\unreal\unreal_iocp_topview\asioserver\asioclient\x64\debug\vc143.idb
-d:\unreal\unreal_iocp_topview\asioserver\asioclient\x64\debug\pch.obj
 d:\unreal\unreal_iocp_topview\asioserver\asioclient\x64\debug\session.obj
 d:\unreal\unreal_iocp_topview\asioserver\asioclient\x64\debug\sendbuffer.obj
 d:\unreal\unreal_iocp_topview\asioserver\asioclient\x64\debug\recvbuffer.obj
@@ -9,6 +7,9 @@ d:\unreal\unreal_iocp_topview\asioserver\asioclient\x64\debug\main.obj
 d:\unreal\unreal_iocp_topview\asioserver\asioclient\x64\debug\clientpackethandler.obj
 d:\unreal\unreal_iocp_topview\asioserver\asioclient\x64\debug\asioclient.obj
 d:\unreal\unreal_iocp_topview\asioserver\asioclient\x64\debug\protocol.pb.obj
+d:\unreal\unreal_iocp_topview\asioserver\asioclient\x64\debug\asioclient.pch
+d:\unreal\unreal_iocp_topview\asioserver\asioclient\x64\debug\pch.obj
+d:\unreal\unreal_iocp_topview\asioserver\asioclient\x64\debug\threadmanager.obj
 d:\unreal\unreal_iocp_topview\asioserver\x64\debug\asioclient.exe
 d:\unreal\unreal_iocp_topview\asioserver\asioclient\x64\debug\asioclient.ilk
 d:\unreal\unreal_iocp_topview\asioserver\x64\debug\asioclient.pdb
