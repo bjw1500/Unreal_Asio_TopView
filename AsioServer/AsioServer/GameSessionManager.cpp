@@ -25,6 +25,7 @@ void GameSessionManager::Remove(ClientSessionRef session)
 {
 	EnterCriticalSection(&_criticalSection);
 	_sessions.erase(session);
+	
 	LeaveCriticalSection(&_criticalSection);
 }
 

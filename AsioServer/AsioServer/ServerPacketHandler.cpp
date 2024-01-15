@@ -50,6 +50,7 @@ bool Handle_C_TryLogin(ClientSessionRef& session, Protocol::C_TryLogin& pkt)
 	string accountID = pkt.id();
 	string accountPassword = pkt.password();
 	int accountDB_Key = db->CheckAccount(accountID, accountPassword);
+	GDBConnectionPool->Push(db);
 
 	//로그인 실패.
 	if (accountDB_Key == false)

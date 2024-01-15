@@ -27,21 +27,29 @@ void AMyPlayerController::BeginPlay()
 
 	check(PlayerInputContext);
 
-	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
 		//뒤에 숫자는 입력 우선 순위.
 		Subsystem->AddMappingContext(PlayerInputContext, 0);
 	}
 
-	// Set up action bindings
-	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(GetLocalPlayer())) {
+	bShowMouseCursor = true;
+	FInputModeGameAndUI InputModeData;
+	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+	InputModeData.SetHideCursorDuringCapture(false);
+	SetInputMode(InputModeData);
 
-		//Jumping
-	//	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+}
+
+void AMyPlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent)) {
+
+
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMyPlayerController::Move);
 
 	}
-
-
 }
 
 void AMyPlayerController::Tick(float DeltaSeconds)
@@ -61,6 +69,14 @@ void AMyPlayerController::Tick(float DeltaSeconds)
 
 }
 
+void AMyPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+
+	CursorTrace();
+
+}
+
 void AMyPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	//GameInstance->GetNetworkManager()->Disconnect();
@@ -68,10 +84,82 @@ void AMyPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 }
 
+void AMyPlayerController::CursorTrace()
+{
+	FHitResult CursorHit;
+	GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, CursorHit);
+
+	//커서에 찍힌게 없으면 리턴.
+	if (CursorHit.bBlockingHit == false)
+		return;
+
+	LastActor = ThisActor;
+	ThisActor = Cast<IObjectInterface>(CursorHit.GetActor());
+
+	/*
+		커서 이벤트 경우의 수
+		1.Last Actor = null && This Actor = null
+			X
+		2.Last Actor && This Actor = null
+			Un Last Actor
+		3.	Last Actor = null && This Actor
+			HighLight This Actor
+		4.Last Actor && This Actor
+			Un Last Actor, Highlight this Actor;
+		5.Last Actor == This Actor
+			X
+	*/
+
+	if (LastActor == nullptr && ThisActor == nullptr)
+	{
+
+	}
+	else if (LastActor && ThisActor == nullptr)
+	{
+		LastActor->UnHighlightActor();
+	}
+	else if (LastActor == nullptr && ThisActor)
+	{
+		ThisActor->HighlightActor();
+	}
+	else if (LastActor && ThisActor)
+	{
+		LastActor->UnHighlightActor();
+		ThisActor->HighlightActor();
+
+	}
+	else if (LastActor == ThisActor)
+	{
+
+	}
+}
 
 
+void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
+{
+	APawn* ControlledPawn = GetPawn();
+	if (IsValid(ControlledPawn) == true)
+	{
+		FVector2D MovementVector = InputActionValue.Get<FVector2D>();
+		// find out which way is forward
+		const FRotator Rotation = GetControlRotation();
+		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-///////////Network
+		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+		//Horizontal = MovementVector.X;
+		//Vertical = MovementVector.Y;
+
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *FString::Printf(TEXT("%d %d"), MovementVector.Y, MovementVector.X));
+		ControlledPawn->AddMovementInput(ForwardDirection, MovementVector.Y);
+		ControlledPawn->AddMovementInput(RightDirection, MovementVector.X);
+	}
+}
+
+/************************
+* Network
+* ***********************/
 
 void AMyPlayerController::SendPlayerInfo()
 {

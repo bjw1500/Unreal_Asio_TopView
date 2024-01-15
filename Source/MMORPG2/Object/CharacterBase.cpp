@@ -28,10 +28,10 @@ void ACharacterBase::Tick(float DeltaTime)
 
 }
 
-// Called to bind functionality to input
 void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
+
+// Called to bind functionality to input
 

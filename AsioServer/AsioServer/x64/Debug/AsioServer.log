@@ -1,7 +1,4 @@
-﻿  ServerPacketHandler.cpp
-D:\unreal\Unreal_IOCP_TopView\AsioServer\AsioServer\AsioServer.h(18,59): warning C4267: 'return': 'size_t'에서 'int32'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Session.cpp
+﻿  Session.cpp
 D:\unreal\Unreal_IOCP_TopView\AsioServer\AsioServer\AsioServer.h(18,59): warning C4267: 'return': 'size_t'에서 'int32'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 D:\unreal\Unreal_IOCP_TopView\AsioServer\AsioServer\Session.cpp(220,9): warning C4267: '인수': 'size_t'에서 'int32'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  코드를 생성하고 있습니다...
   AsioServer.vcxproj -> D:\unreal\Unreal_IOCP_TopView\AsioServer\x64\Debug\AsioServer.exe
