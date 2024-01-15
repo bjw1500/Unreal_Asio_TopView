@@ -9,9 +9,10 @@
 #include "GameManager.generated.h"
 
 class NetworkManager;
-class ClientPacketHandler;
+class UClientPacketHandler;
 class PacketQueue;
 class UUIManager;
+class UObjectManager;
 
 UCLASS()
 class MMORPG2_API UGameManager : public UGameInstance
@@ -31,10 +32,10 @@ public:
 public:
 	NetworkManager*								GetNetworkManager();
 
-	UFUNCTION(BlueprintCallable, Category = "Manager")
 	UUIManager*											GetUIManager();
+	UObjectManager*								GetObjectManager();
 
-	ClientPacketHandler*							GetPacketHandler();
+	UClientPacketHandler*						GetPacketHandler();
 	PacketQueue*										GetPacketQueue();
 	AMyPlayerController*							GetPlayerController() 
 	{
@@ -44,10 +45,10 @@ public:
 private:
 	TSharedPtr<NetworkManager>					_netWorkManager;
 	TSharedPtr<PacketQueue>							_packetQueue;
-	TSharedPtr<ClientPacketHandler>			_packetHandler;
+	//TSharedPtr<ClientPacketHandler>			_packetHandler;
 
-	UPROPERTY()
-	TObjectPtr<UUIManager>								UIManager;
+	//UPROPERTY()
+	//TObjectPtr<UUIManager>								UIManager;
 
 	UPROPERTY()
 	AMyPlayerController* MyPlayerController = nullptr;

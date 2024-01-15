@@ -11,6 +11,8 @@
 #include "Network/ClientPacketHandler.h"
 #include "Kismet/GameplayStatics.h"
 #include "Network/GameManager.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 
 
 AMyPlayerController::AMyPlayerController()
@@ -21,6 +23,25 @@ AMyPlayerController::AMyPlayerController()
 void AMyPlayerController::BeginPlay()
 {
 	//GameInstance->GetNetworkManager()->Init();
+	Super::BeginPlay();
+
+	check(PlayerInputContext);
+
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+	{
+		//뒤에 숫자는 입력 우선 순위.
+		Subsystem->AddMappingContext(PlayerInputContext, 0);
+	}
+
+	// Set up action bindings
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(GetLocalPlayer())) {
+
+		//Jumping
+	//	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+
+	}
+
+
 }
 
 void AMyPlayerController::Tick(float DeltaSeconds)

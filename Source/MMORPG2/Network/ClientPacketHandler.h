@@ -6,13 +6,16 @@
 #include "GameManager.h"
 #include "NetworkSession.h"
 #include "Managers/NetworkManager.h"
+#include "ClientPacketHandler.generated.h"
 
 /**
  * 
  */
 
-class MMORPG2_API ClientPacketHandler
+ UCLASS()
+class MMORPG2_API UClientPacketHandler : public UGameInstanceSubsystem
 {
+	 GENERATED_BODY()
 public:
 	void OnRecvPacket(ServerSessionRef session, BYTE* buffer, int32 len);
 	void HandlePacket(PacketMessage packet);
@@ -34,8 +37,11 @@ public:
 	SendBufferRef Make_S_TEST(uint64 id, uint32 hp, uint16 attack);
 	
 	//Pre - Game
+	UFUNCTION(BlueprintCallable, Category = "Server")
 	void Make_C_TryLogin(FString id, FString password);
+	UFUNCTION(BlueprintCallable, Category = "Server")
 	void Make_C_EnterField(int32 characterId = 0);
+	UFUNCTION(BlueprintCallable, Category = "Server")
 	void Make_C_DisConnect(FString reason);
 
 	template<typename T>

@@ -10,6 +10,7 @@
 #include "Protocol.pb.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
+#include "Managers/ObjectManager.h"
 #include "Managers/UIManager.h"
 
 UGameManager* GameInstance = nullptr;
@@ -51,23 +52,28 @@ NetworkManager* UGameManager::GetNetworkManager()
 
 UUIManager* UGameManager::GetUIManager()
 {
-	if (IsValid(UIManager)== false)
-	{
-		UIManager = NewObject<UUIManager>();
-	}
+	//if (IsValid(UIManager)== false)
+	//{
+	//	UIManager = NewObject<UUIManager>();
+	//}
 
-	return UIManager;
+	return GetSubsystem<UUIManager>();
 }
 
-ClientPacketHandler* UGameManager::GetPacketHandler()
+UObjectManager* UGameManager::GetObjectManager()
 {
-	if (_netWorkManager.IsValid() == false)
-	{
-		_packetHandler = MakeShared<ClientPacketHandler>();
-	}
+	return GetSubsystem<UObjectManager>();
+}
+
+UClientPacketHandler* UGameManager::GetPacketHandler()
+{
+	//if (_netWorkManager.IsValid() == false)
+	//{
+	//	_packetHandler = MakeShared<ClientPacketHandler>();
+	//}
 
 
-	return _packetHandler.Get();
+	return GetSubsystem<UClientPacketHandler>();
 }
 
 PacketQueue* UGameManager::GetPacketQueue()

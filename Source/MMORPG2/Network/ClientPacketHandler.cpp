@@ -17,7 +17,7 @@
 #include "Managers/UIManager.h"
 #include "Widget/GameTitleWidget.h"
 
-void ClientPacketHandler::OnRecvPacket(ServerSessionRef session, BYTE* buffer, int32 len)
+void UClientPacketHandler::OnRecvPacket(ServerSessionRef session, BYTE* buffer, int32 len)
 {
    PacketHeader* header = (PacketHeader*)buffer;
 //	uint16 id = header->id;
@@ -32,7 +32,7 @@ void ClientPacketHandler::OnRecvPacket(ServerSessionRef session, BYTE* buffer, i
 	//Utils::DebugLog(string);
 }
 
-void ClientPacketHandler::HandlePacket(PacketMessage packet)
+void UClientPacketHandler::HandlePacket(PacketMessage packet)
 {
 	PacketHeader* header = (PacketHeader*)packet.pkt.GetData();
 	uint16 id = header->id;
@@ -67,7 +67,7 @@ void ClientPacketHandler::HandlePacket(PacketMessage packet)
 
 
 
-void ClientPacketHandler::Handle_S_TEST(PacketMessage packet)
+void UClientPacketHandler::Handle_S_TEST(PacketMessage packet)
 {
 	Protocol::S_Test pkt;
 	PacketHeader* header = (PacketHeader*)packet.pkt.GetData();
@@ -80,7 +80,7 @@ void ClientPacketHandler::Handle_S_TEST(PacketMessage packet)
 	Utils::DebugLog(text);
 }
 
-void ClientPacketHandler::Handle_S_Disconnect(PacketMessage packet)
+void UClientPacketHandler::Handle_S_Disconnect(PacketMessage packet)
 {
 
 	Protocol::S_Disconnect pkt;
@@ -92,7 +92,7 @@ void ClientPacketHandler::Handle_S_Disconnect(PacketMessage packet)
 
 }
 
-void ClientPacketHandler::Handle_S_Chat(PacketMessage packet)
+void UClientPacketHandler::Handle_S_Chat(PacketMessage packet)
 {
 	Protocol::S_Chat pkt;
 	PacketHeader* header = (PacketHeader*)packet.pkt.GetData();
@@ -123,17 +123,20 @@ void ClientPacketHandler::Handle_S_Chat(PacketMessage packet)
 
 }
 
-void ClientPacketHandler::Handle_S_EnterField(PacketMessage packet)
+void UClientPacketHandler::Handle_S_EnterField(PacketMessage packet)
 {
 	Protocol::S_EnterField pkt;
 	PacketHeader* header = (PacketHeader*)packet.pkt.GetData();
 	pkt.ParseFromArray(&header[1], header->size - sizeof(PacketHeader));
 
+	if(GameInstance->bConnected == false)
+		return;
+
 	Utils::DebugLog(TEXT("Handle S EnterField"));
 
 }
 
-void ClientPacketHandler::Handle_S_Connect(PacketMessage packet)
+void UClientPacketHandler::Handle_S_Connect(PacketMessage packet)
 {
 	Protocol::S_Connect pkt;
 	PacketHeader* header = (PacketHeader*)packet.pkt.GetData();
@@ -162,7 +165,7 @@ void ClientPacketHandler::Handle_S_Connect(PacketMessage packet)
 
 }
 
-void ClientPacketHandler::Handle_S_SuccessLogin(PacketMessage packet)
+void UClientPacketHandler::Handle_S_SuccessLogin(PacketMessage packet)
 {
 	Protocol::S_SuccessLogin pkt;
 	PacketHeader* header = (PacketHeader*)packet.pkt.GetData();
@@ -176,7 +179,7 @@ void ClientPacketHandler::Handle_S_SuccessLogin(PacketMessage packet)
 	gameTitleUI->OnSuccessLogin(text);
 }
 
-void ClientPacketHandler::Handle_S_FailedLogin(PacketMessage packet)
+void UClientPacketHandler::Handle_S_FailedLogin(PacketMessage packet)
 {
 	Protocol::S_FailedLogin pkt;
 	PacketHeader* header = (PacketHeader*)packet.pkt.GetData();
@@ -184,7 +187,7 @@ void ClientPacketHandler::Handle_S_FailedLogin(PacketMessage packet)
 }
 
 
-SendBufferRef ClientPacketHandler::Make_S_TEST(uint64 id, uint32 hp, uint16 attack)
+SendBufferRef UClientPacketHandler::Make_S_TEST(uint64 id, uint32 hp, uint16 attack)
 {
 	Protocol::S_Test pkt;
 
@@ -205,7 +208,7 @@ SendBufferRef ClientPacketHandler::Make_S_TEST(uint64 id, uint32 hp, uint16 atta
 //	pkt.set_msg(TCHAR_TO_UTF8(*msg));
 //}
 
-void ClientPacketHandler::Make_C_TryLogin(FString id, FString password)
+void UClientPacketHandler::Make_C_TryLogin(FString id, FString password)
 {
 	Protocol::C_TryLogin pkt;
 	pkt.set_id(TCHAR_TO_UTF8(*id));
@@ -214,7 +217,7 @@ void ClientPacketHandler::Make_C_TryLogin(FString id, FString password)
 	GameInstance->GetNetworkManager()->SendPacket(sendBuffer);
 }
 
-void ClientPacketHandler::Make_C_EnterField(int32 characterId)
+void UClientPacketHandler::Make_C_EnterField(int32 characterId)
 {
 	Protocol::C_EnterField pkt;
 	pkt.set_characterid(characterId);
@@ -223,7 +226,7 @@ void ClientPacketHandler::Make_C_EnterField(int32 characterId)
 	GameInstance->GetNetworkManager()->SendPacket(sendbuffer);
 }
 
-void ClientPacketHandler::Make_C_DisConnect(FString reason)
+void UClientPacketHandler::Make_C_DisConnect(FString reason)
 {
 	Protocol::C_Disconnect pkt;
 	SendBufferRef sendBuffer = MakeSendBuffer(pkt, Protocol::C_DISCONNECT);

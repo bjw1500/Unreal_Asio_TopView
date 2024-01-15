@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class MMORPG2_API UUIManager : public UObject
+class MMORPG2_API UUIManager : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 
